@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SurakshaSetu</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Noto+Sans:wght@400;500;600&family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f1f4f8;--card:#fff;--ink:#16213e;--mute:#5b6680;--line:#dde2ec;--teal:#0b7a75;--c:#0b7a75;--ct:#0b7a75;
+--f:'Noto Sans','Noto Sans Devanagari','Noto Sans Tamil','Noto Sans Telugu','Noto Sans Bengali',system-ui,sans-serif;--d:'Bricolage Grotesque',var(--f)}
+body[data-v=SAFE]{--c:#16965f;--ct:#0e7a4c}body[data-v=SUSPICIOUS]{--c:#e59a00;--ct:#935600}body[data-v=FRAUD]{--c:#d62839;--ct:#c01f30}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;font:14px/1.5 var(--f);background:var(--bg);color:var(--ink);transition:background .5s}
+body[data-v=FRAUD]{background:#fbe9ea}
+button,select,input{font:inherit}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px clamp(16px,4vw,36px)}
+.brand{display:flex;gap:10px;align-items:center}.brand b{font:800 18px var(--d);letter-spacing:-.02em;display:block;line-height:1.1}.brand span{font-size:12px;color:var(--mute)}
+.pill{display:flex;gap:8px;align-items:center;padding:7px 14px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-weight:600;font-size:14px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--mute)}
+.pill.live .dot{background:#16965f;animation:pl 1.2s infinite}.pill.alert .dot{background:#d62839}
+@keyframes pl{50%{opacity:.25}}
+.app{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:16px;padding:0 clamp(16px,4vw,36px) 36px;max-width:1200px;margin:auto}
+@media(max-width:880px){.app{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px}.col{display:grid;gap:16px;align-content:start}
+.stage{text-align:center}
+.ringwrap{position:relative;width:min(190px,60vw);aspect-ratio:1;margin:4px auto 6px}
+.halo{position:absolute;inset:-6%;border-radius:50%;background:var(--c);opacity:.14;transform:scale(calc(.9 + var(--lvl,0)*.35));transition:transform .08s,background .4s}
+.ringwrap svg{position:relative;width:100%;height:100%;transform:rotate(-90deg)}
+.trk{fill:none;stroke:#e6eaf2;stroke-width:14}
+#arc{fill:none;stroke:var(--c);stroke-width:14;stroke-linecap:round;stroke-dasharray:553;stroke-dashoffset:553;transition:stroke-dashoffset .7s cubic-bezier(.3,.9,.3,1),stroke .4s}
+.mid{position:absolute;inset:0;display:grid;place-content:center}
+.mid b{font:800 44px/1 var(--d);letter-spacing:-.03em}.mid small{color:var(--mute);font-size:11px}
+#verdict{font:800 21px/1.2 var(--d);margin:6px 0 2px;color:var(--ct);letter-spacing:-.01em}
+#vsub{margin:0 auto 18px;color:var(--mute);max-width:46ch}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:var(--bg);border-radius:14px;margin-bottom:18px}
+.seg button{border:0;background:none;padding:11px;border-radius:11px;font-weight:600;color:var(--mute);cursor:pointer}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 4px #16213e24}
+.btn{padding:9px 16px;font-size:14px;border-radius:12px;border:1.5px solid var(--teal);background:var(--card);color:var(--teal);font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:transform .1s}
+.btn:active{transform:scale(.97)}.btn.main{background:var(--teal);color:#fff}.btn.big{padding:12px 26px;font-size:15px;border-radius:99px}.btn.bad{background:#d62839;border-color:#d62839;color:#fff}
+.btn.stop{background:#d62839;border-color:#d62839;color:#fff}.btn:disabled{opacity:.4;cursor:default}
+:focus-visible{outline:3px solid #e59a00;outline-offset:2px}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;align-items:center;margin:10px 0}
+.hint{color:var(--mute);font-size:13px;margin:6px 0}
+.meter{height:6px;width:min(280px,80%);margin:12px auto 0;background:var(--bg);border-radius:9px;overflow:hidden}#meter{height:100%;width:0;background:var(--teal)}
+details{text-align:left;margin-top:12px}summary{cursor:pointer;font-weight:600;color:var(--mute);font-size:14px}
+details input[type=range]{width:100%;accent-color:var(--teal)}
+.sel{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.sel label{font-size:13px;color:var(--mute);display:grid;gap:3px;text-align:left}
+select{padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);font-weight:600}
+.info{background:var(--bg);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:14px;text-align:left}
+.prog{height:6px;background:var(--bg);border-radius:9px;overflow:hidden;margin-top:6px}#pbar{height:100%;width:0;background:var(--teal)}
+.head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px}
+h3{margin:0;font:800 15px var(--d)}
+.feed{max-height:420px;overflow:auto;display:grid;gap:10px;align-content:start}
+.empty{padding:26px 10px;text-align:center;color:var(--mute)}
+.msg{padding:12px 16px;border-radius:4px 18px 18px 18px;background:var(--bg);animation:in .3s;max-width:92%}
+@keyframes in{from{opacity:0;transform:translateY(6px)}}
+.msg b{display:block;font-size:12px;color:var(--mute);font-weight:600}.msg span.t{font-size:15px;line-height:1.5}
+.msg.err{background:#fbe5e5}.msg.end{max-width:100%;border-radius:14px;border:1px dashed var(--line);background:none;text-align:center}
+.msg i{display:inline-block;width:6px;height:6px;margin-right:4px;border-radius:50%;background:var(--mute);animation:pl 1s infinite}
+mark{background:#ffd9a0;border-radius:4px;padding:0 3px}
+.chip{display:inline-block;margin:6px 4px 0 0;padding:2px 10px;border-radius:99px;background:#fbe0a8;font-size:12px;font-weight:600;color:#6b4300}
+.sig{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sig li{display:grid;grid-template-columns:24px 1fr;gap:10px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);color:var(--mute);transition:all .3s}
+.sig li i{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);display:grid;place-content:center;font-style:normal;font-size:13px;color:#fff;font-weight:700}
+.sig li small{display:none;font-size:13px;color:var(--ink);margin-top:2px}
+.sig li.hit{border-color:#d62839;background:#fdf1f2;color:var(--ink);font-weight:600}.sig li.hit i{background:#d62839;border-color:#d62839}.sig li.hit small{display:block;font-weight:400}
+dl{display:grid;grid-template-columns:1fr auto;gap:4px 12px;margin:10px 0 0;font-size:14px}dd{margin:0;font-weight:700}
+ol.how{margin:10px 0 0;padding-left:20px;color:var(--mute);font-size:14px}
+.ov{position:fixed;inset:0;z-index:9;background:#7a0f1bd9;display:grid;place-items:center;padding:16px;animation:in .3s}
+.sheet{background:#fff;border-radius:24px;padding:28px;max-width:480px;width:100%;border-top:10px solid #d62839}
+.sheet h2{font:800 24px/1.15 var(--d);color:#c01f30;margin:0 0 8px}.sheet ol{padding-left:22px;font-size:15px;margin:12px 0 18px}.sheet li{margin:6px 0}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:12px;z-index:10;max-width:90vw}
+#land{max-width:620px;margin:6vh auto 0;padding:0 20px 40px;text-align:center}
+#land h1{font:800 clamp(28px,6vw,40px)/1.1 var(--d);letter-spacing:-.025em;margin:18px 0 12px}
+#land p{color:var(--mute);font-size:15px;margin:0 auto 22px;max-width:48ch}
+.pts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:26px 0;text-align:left}
+@media(max-width:560px){.pts{grid-template-columns:1fr}}
+.pts div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:13px;color:var(--mute)}.pts b{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
+.brand{cursor:pointer}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.rk{display:block}.rt{display:block}
+@media(min-width:980px){
+ .app{grid-template-columns:350px minmax(0,1fr) 300px;max-width:1560px;height:calc(100vh - 92px);padding-bottom:14px;gap:14px}
+ .app>.col{min-height:0;overflow:auto;gap:12px}
+ .app .card{padding:14px;border-radius:16px}
+ .tr{display:flex;flex-direction:column;min-height:0}
+ .tr .feed{flex:1;max-height:none;min-height:0}
+ .rk{display:flex;align-items:center;gap:14px;text-align:left;margin-bottom:12px}
+ .rk .ringwrap{width:96px;margin:0;flex:none}
+ .mid b{font-size:28px}.mid small{display:none}
+ .rt #verdict{margin:0;font-size:18px}
+ .rt #vsub{margin:3px 0 0;font-size:12.5px;max-width:none}
+ .seg{margin-bottom:10px}
+ .stage p.hint{font-size:12px;margin:6px 0}
+ #translationNotice:empty{display:none}
+ .stage .info{padding:8px 12px;font-size:13px}
+ .sig{gap:6px}.sig li{padding:6px 10px;font-size:13px;grid-template-columns:20px 1fr;gap:8px}
+ .sig li i{width:18px;height:18px;font-size:11px}
+ dl{font-size:13px;margin:6px 0 0}
+}
+</style>
+</head>
+<body data-v="SAFE">
+<section id="land">
+  <svg width="64" height="64" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2l12 4v9c0 7-5 12-12 15C9 27 4 22 4 15V6z" fill="#0b7a75"/><path d="M9 18q7-9 14 0M9 18v3M23 18v3M16 13.5V21" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>
+  <h1>Know if a call is a scam while it is happening</h1>
+  <p>SurakshaSetu listens to a call in Hindi, English, Tamil, Telugu or Bengali and warns you the moment it sounds like fraud.</p>
+  <button class="btn main big" id="go">Get started</button>
+  <div class="pts"><div><b>Listens</b>Hears each part of the call as it happens.</div><div><b>Spots scam signs</b>Looks for OTP requests, threats and pressure.</div><div><b>Warns you</b>Alerts you out loud in your language.</div></div>
+  <p style="font-size:12px;margin:0">Audio is analysed and then discarded. Nothing is stored.</p>
+</section>
+<header class="top" id="hdr" hidden>
+  <div class="brand"><svg width="36" height="36" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2l12 4v9c0 7-5 12-12 15C9 27 4 22 4 15V6z" fill="#0b7a75"/><path d="M9 18q7-9 14 0M9 18v3M23 18v3M16 13.5V21" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>
+    <div><b>SurakshaSetu</b><span>Scam-call shield</span></div></div>
+  <div class="pill" id="status" role="status"><span class="dot"></span><span id="stext">Idle</span></div>
+</header>
+
+<div class="ov" id="ov" role="alertdialog" aria-modal="true" aria-labelledby="ovt" hidden><div class="sheet">
+  <h2 id="ovt">This is likely a scam call</h2>
+  <p style="margin:0">Real police, banks and government offices never ask for OTPs or money on a call.</p>
+  <div id="ovchips"></div>
+  <ol><li>Hang up the call.</li><li>Do not share any OTP, PIN or password.</li><li>Do not send money, even a small amount.</li><li>Tell someone you trust about this call.</li></ol>
+  <div class="row" style="justify-content:flex-start"><button class="btn" id="ovx">I understand</button></div>
+</div></div>
+
+<main class="app" hidden>
+<div class="col">
+<section class="card stage">
+  <div class="rk"><div class="ringwrap"><div class="halo"></div>
+    <svg viewBox="0 0 200 200" aria-hidden="true"><circle class="trk" cx="100" cy="100" r="88"/><circle id="arc" cx="100" cy="100" r="88"/></svg>
+    <div class="mid"><b id="score">0</b><small>risk out of 100</small></div></div>
+  <div class="rt"><h2 id="verdict">Ready when you are</h2>
+  <p id="vsub">Start a live call check, or try a sample call to see how it works.</p></div></div>
+
+  <div class="seg" role="tablist"><button class="on" id="tLive" role="tab">Live call</button><button id="tRec" role="tab">Test a recording</button></div>
+
+  <div id="pLive">
+    <p class="hint">Put your call on speaker next to this device. We listen whenever someone speaks and detect the language automatically.</p>
+    <div class="row"><button class="btn main big" id="bLive">Start listening</button></div>
+    <div class="meter"><div id="meter"></div></div>
+    <details><summary>Can't pick up quiet voices?</summary><p class="hint">Move left to hear quieter voices.</p><input type="range" id="gate" min="0.004" max="0.06" step="0.001" value="0.015" aria-label="Noise gate"></details>
+  </div>
+
+  <div id="pRec" hidden>
+    <div class="sel">
+      <label>Language of the call<select id="callLang"><option value="auto">Auto-detect</option><option value="hi-IN">Hindi</option><option value="en-IN">English</option><option value="te-IN">Telugu</option><option value="ta-IN">Tamil</option><option value="bn-IN">Bengali</option></select></label>
+      <label>Warning voice language<select id="transcriptLang"><option value="hi-IN">Hindi</option><option value="en-IN" selected>English</option><option value="te-IN">Telugu</option><option value="ta-IN">Tamil</option><option value="bn-IN">Bengali</option></select></label>
+    </div>
+    <p class="hint" id="translationNotice"></p>
+    <div class="row"><button class="btn" id="sScam">Try a scam call</button><button class="btn" id="sOk">Try a genuine call</button>
+      <label class="btn">Upload audio<input type="file" id="file" accept="audio/*" hidden></label></div>
+    <div class="info" id="info">No recording loaded yet. Pick a sample or upload your own.</div>
+    <a class="hint" id="dl" hidden>Save this recording</a>
+    <div class="row"><button class="btn main big" id="bPlay" disabled>Play and analyse</button><button class="btn stop" id="bStop" disabled>Stop</button></div>
+    <div class="prog" hidden id="prog"><div id="pbar"></div></div>
+  </div>
+</section>
+</div>
+
+<section class="card tr">
+  <div class="head"><h3>Caller transcript</h3><span class="hint" style="margin:0">Scam phrases are <mark>highlighted</mark></span></div>
+  <div class="feed" id="feed" aria-live="polite"></div>
+</section>
+
+<aside class="col">
+  <section class="card">
+    <div class="head"><h3>Scam signs we listen for</h3><span class="hint" style="margin:0" id="cnt">0 of 8</span></div>
+    <ul class="sig" id="sigs"></ul>
+  </section>
+  <section class="card">
+    <details open style="margin:0"><summary>Gnani usage this session</summary>
+      <dl id="st"></dl><p class="hint">Your credit balance is on the Gnani dashboard, under Usage.</p></details>
+    <details><summary>How it works</summary><ol class="how">
+      <li>Voice detection cuts the call at each pause.</li>
+      <li>Prisma transcribes each part and detects the language.</li>
+      <li>Rules score OTP requests, threats, secrecy and urgency.</li>
+      <li>At 70 risk, a Timbre voice warns you in your language.</li></ol></details>
+  </section>
+</aside>
+</main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const $=s=>document.querySelector(s),SR=16000;
+let sid,chain,last,rec,live,play,warnLock=false,callGain,lvl=0;
+const esc=t=>t.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const NAMES={'hi-IN':'Hindi','en-IN':'English','te-IN':'Telugu','ta-IN':'Tamil','bn-IN':'Bengali'};
+const SIGNS=[
+ ['Asks for OTP / PIN / password','Real banks never ask for these on a call.'],
+ ['Claims to be an official','Police, CBI or customs do not handle cases by phone.'],
+ ['Threatens arrest or case','Fear is used to stop you thinking.'],
+ ['Demands secrecy','Scammers isolate you so nobody can stop them.'],
+ ['Creates urgency','Pressure to act "right now" is a classic trick.'],
+ ['Asks for identity data','Aadhaar, PAN or KYC details can be misused.'],
+ ['Asks for money transfer','No genuine office demands UPI payment on a call.'],
+ ['Threatens service cut-off','"Your power or account will be blocked" is a common threat.']];
+const VT={SAFE:['No scam signs so far','Keep listening. We will warn you if anything looks wrong.'],SUSPICIOUS:['Be careful','Some signs of a scam. Do not share any codes or send money.'],FRAUD:['Likely scam call','Hang up. Do not share your OTP, PIN or send any money.']};
+const status=(k,t)=>{$('#status').className='pill '+k;$('#stext').textContent=t};
+function toast(t){const e=$('#toast');e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,4500)}
+function setLvl(v){lvl=v;$('.stage').style.setProperty('--lvl',Math.min(1,v*9))}
+const chips=a=>a.map(s=>`<span class="chip">${s}</span>`).join('');
+function empty(){$('#feed').innerHTML='<div class="empty">Your transcript will appear here as the caller speaks.<br>Start a live call or try a sample call.</div>'}
+
+function session(){
+  if(sid)fetch('/api/reset?sid='+sid,{method:'POST'});
+  sid='s'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+  chain=Promise.resolve();last=null;empty();$('#ov').hidden=true;document.title='SurakshaSetu';
+  risk({score:0,verdict:'SAFE',signals:[]},true);
+}
+function risk(d,idle){
+  document.body.dataset.v=d.verdict;
+  $('#score').textContent=d.score;$('#arc').style.strokeDashoffset=553*(1-d.score/100);
+  $('#verdict').textContent=idle?'Ready when you are':VT[d.verdict][0];
+  $('#vsub').textContent=idle?'Start a live call check, or try a sample call to see how it works.':VT[d.verdict][1];
+  $('#sigs').innerHTML=SIGNS.map(([k,w])=>{const h=d.signals.includes(k);return `<li class="${h?'hit':''}"><i>${h?'!':''}</i><div>${k}<small>${w}</small></div></li>`}).join('');
+  $('#cnt').textContent=d.signals.length+' of '+SIGNS.length;
+}
+function stat(s){$('#st').innerHTML=`<dt>Speech-to-text requests</dt><dd>${s.stt_calls}</dd><dt>Audio transcribed</dt><dd>${s.stt_audio_s} s</dd><dt>Average Prisma latency</dt><dd>${s.stt_avg_ms} ms</dd><dt>Timbre voice characters</dt><dd>${s.tts_chars}</dd>`}
+function hl(text,matches){
+  const low=text.toLowerCase(),iv=[];
+  for(const m of matches)for(const t of m.texts){let i=0,tl=t.toLowerCase();while((i=low.indexOf(tl,i))>=0){iv.push([i,i+t.length]);i+=t.length}}
+  iv.sort((a,b)=>a[0]-b[0]);const mg=[];
+  for(const x of iv){const l=mg[mg.length-1];if(l&&x[0]<=l[1])l[1]=Math.max(l[1],x[1]);else mg.push([...x])}
+  let o='',p=0;for(const[a,b]of mg){o+=esc(text.slice(p,a))+'<mark>'+esc(text.slice(a,b))+'</mark>';p=b}
+  return o+esc(text.slice(p));
+}
+function alarm(d,warningLang){
+  $('#ovchips').innerHTML=chips(d.signals);$('#ov').hidden=false;$('#ovx').focus();
+  document.title='SCAM ALERT - SurakshaSetu';status('alert','Scam detected');
+  navigator.vibrate&&navigator.vibrate([400,120,400,120,800]);
+  warnLock=true;if(callGain)callGain.gain.value=.15;
+  const done=()=>{warnLock=false;if(callGain)callGain.gain.value=1};
+  const safeLang=Object.keys(NAMES).includes(warningLang)?warningLang:'hi-IN';const a=new Audio('/api/warning?lang='+encodeURIComponent(safeLang)+'&sig='+encodeURIComponent(d.warning_key||'generic'));a.onended=done;a.onerror=done;a.play().catch(done);
+}
+$('#ovx').onclick=()=>{$('#ov').hidden=true};
+addEventListener('keydown',e=>{if(e.key==='Escape')$('#ov').hidden=true});
+
+function send(i16){
+  const f=$('#feed');f.querySelector('.empty')?.remove();
+  const r=document.createElement('div');r.className='msg';r.innerHTML='<b>Caller</b><span class="t"><i></i><i></i><i></i> Listening closely</span>';f.appendChild(r);f.scrollTop=f.scrollHeight;
+  chain=chain.then(async()=>{try{
+    const mode=$('#pLive').hidden?'recording':'live';const callLang=mode==='live'?'auto':$('#callLang').value;const transcriptLang=mode==='live'?'same':$('#transcriptLang').value;
+    const res=await fetch('/api/analyze?sid='+sid+'&lang='+encodeURIComponent(callLang)+'&transcript_lang='+encodeURIComponent(transcriptLang),{method:'POST',body:i16.buffer});const d=await res.json();
+    if(!res.ok)throw Error(d.error||res.statusText);
+    if(!d.text){r.remove();return}
+    last=d;const labels=(d.matches||[]).map(m=>m.label);
+    r.querySelector('span').innerHTML=hl(d.text,d.matches)+(labels.length?'<div>'+chips(labels)+'</div>':'');
+    r.querySelector('span').className='t';
+    r.querySelector('b').textContent='Caller ('+(NAMES[d.detected_language_code]||d.detected_language_code||'Unknown')+') · '+d.latency_ms+' ms';
+    risk(d);stat(d.stats);
+    if(d.alert){const warningLang=mode==='recording'?$('#transcriptLang').value:d.detected_language_code;alarm(d,warningLang)}
+    f.scrollTop=f.scrollHeight;
+  }catch(e){r.querySelector('span').textContent='Could not analyse this part: '+e.message;r.classList.add('err')}});
+  return chain;
+}
+const cat=a=>{const o=new Float32Array(a.reduce((n,x)=>n+x.length,0));let i=0;for(const x of a){o.set(x,i);i+=x.length}return o};
+function down(f,r){if(r===SR)return f;const k=r/SR,n=Math.floor(f.length/k),o=new Float32Array(n);
+  for(let i=0;i<n;i++){const s=Math.floor(i*k),e=Math.max(s+1,Math.floor((i+1)*k));let a=0;for(let j=s;j<e;j++)a+=f[j];o[i]=a/(e-s)}return o}
+const i16=f=>{const o=new Int16Array(f.length);for(let i=0;i<f.length;i++){const v=Math.max(-1,Math.min(1,f[i]));o[i]=v<0?v*32768:v*32767}return o};
+function finish(){chain.then(()=>{if(last)$('#feed').insertAdjacentHTML('beforeend',`<div class="msg end"><b>Call ended</b><span>Final verdict: <strong>${VT[last.verdict][0]}</strong> · risk ${last.score}/100</span></div>`);$('#feed').scrollTop=1e6;setLvl(0);status('','Idle')})}
+
+/* ---------- live microphone ---------- */
+async function startLive(){
+  session();
+  const st=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:true}});
+  const ctx=new AudioContext(),src=ctx.createMediaStreamSource(st),p=ctx.createScriptProcessor(4096,1,1),z=ctx.createGain();z.gain.value=0;
+  let buf=[],pre=[],ms=0,sil=0,talk=false;
+  const flush=()=>{if(ms>=400)send(i16(down(cat(buf),ctx.sampleRate)));buf=[];ms=0;sil=0;talk=false};
+  p.onaudioprocess=e=>{
+    const x=new Float32Array(e.inputBuffer.getChannelData(0));let q=0;for(const v of x)q+=v*v;
+    const r=Math.sqrt(q/x.length),d=x.length/ctx.sampleRate*1000;$('#meter').style.width=Math.min(100,r*900)+'%';setLvl(r);
+    if(warnLock){buf=[];ms=0;talk=false;return}
+    if(r>+$('#gate').value){if(!talk){talk=true;buf=[...pre]}buf.push(x);ms+=d;sil=0}
+    else if(talk){buf.push(x);sil+=d;if(sil>=700)flush()}
+    else{pre.push(x);if(pre.length>3)pre.shift()}
+    if(talk&&ms>=15000)flush();
+  };
+  src.connect(p);p.connect(z);z.connect(ctx.destination);
+  live={ctx,st,flush};const b=$('#bLive');b.textContent='Stop listening';b.classList.add('stop');b.classList.remove('main');status('live','Listening');
+}
+function stopLive(){live.flush();live.st.getTracks().forEach(t=>t.stop());live.ctx.close();live=null;const b=$('#bLive');b.textContent='Start listening';b.classList.remove('stop');b.classList.add('main');$('#meter').style.width=0;finish()}
+$('#bLive').onclick=async()=>{try{live?stopLive():await startLive()}catch(e){toast('Microphone unavailable. Allow microphone access in your browser and try again.')}};
+
+/* ---------- recording test ---------- */
+async function prepare(ab){
+  const t=new AudioContext(),dec=await t.decodeAudioData(ab.slice(0));t.close();
+  const off=new OfflineAudioContext(1,Math.ceil(dec.duration*SR),SR),s=off.createBufferSource();s.buffer=dec;s.connect(off.destination);s.start();
+  const pcm=(await off.startRendering()).getChannelData(0);
+  const fl=320,n=Math.floor(pcm.length/fl),e=new Float32Array(n);
+  for(let i=0;i<n;i++){let q=0;for(let j=0;j<fl;j++){const v=pcm[i*fl+j];q+=v*v}e[i]=Math.sqrt(q/fl)}
+  const p90=Array.from(e).sort((a,b)=>a-b)[Math.floor(n*.9)]||.05,thr=Math.max(.008,Math.min(.04,.2*p90));
+  const raw=[];let a=-1,l=-1;
+  for(let i=0;i<n;i++){if(e[i]>thr){if(a<0)a=i;l=i}else if(a>=0&&i-l>30){raw.push([a,l]);a=-1}}
+  if(a>=0)raw.push([a,l]);
+  const segs=[];for(let[x,y]of raw){while(y-x>750){segs.push([x,x+750]);x+=750}if(y-x>=17)segs.push([x,y])}
+  return{dec,pcm,segs:segs.map(([x,y])=>({s:Math.max(0,x-8)*fl,e:Math.min(n,y+9)*fl}))};
+}
+async function setRec(ab,name){rec=await prepare(ab);$('#info').innerHTML=`<strong>${esc(name)}</strong><br>${rec.dec.duration.toFixed(1)} seconds, ${rec.segs.length} speech parts found. Press Play and analyse.`;$('#bPlay').disabled=false}
+async function sample(k){
+  $('#info').textContent='Creating a new call with Gnani Timbre. This takes about 10 seconds...';$('#sScam').disabled=$('#sOk').disabled=true;
+  try{const r=await fetch('/api/sample/'+k+'?lang='+encodeURIComponent($('#callLang').value));if(!r.ok)throw Error((await r.json()).error);const title=decodeURIComponent(r.headers.get('X-Scenario')||'Sample'),b=await r.blob();await setRec(await b.arrayBuffer(),title);const a=$('#dl');a.href=URL.createObjectURL(b);a.download=title.replace(/[^\w]+/g,'_')+'.wav';a.hidden=false}
+  catch(e){$('#info').textContent='Could not load a sample call: '+e.message}
+  $('#sScam').disabled=$('#sOk').disabled=false;
+}
+$('#sScam').onclick=()=>sample('scam');$('#sOk').onclick=()=>sample('ok');
+function updateTranslationNotice(){const c=$('#callLang').value,t=$('#transcriptLang').value;$('#translationNotice').textContent=(c!=='auto'&&c!==t)?'The transcript stays in the spoken language. The warning voice will use '+NAMES[t]+'.':'The transcript is shown in the spoken language. The warning voice will use '+NAMES[t]+'.'}
+$('#callLang').onchange=$('#transcriptLang').onchange=updateTranslationNotice;updateTranslationNotice();
+$('#file').onchange=async e=>{const f=e.target.files[0];if(f)try{$('#dl').hidden=true;await setRec(await f.arrayBuffer(),f.name)}catch(x){$('#info').textContent='This audio file could not be read. Try a WAV or MP3 file.'}};
+function stopPlay(){clearInterval(play.t);play.src.stop();play.ctx.close();play=null;callGain=null;$('#bPlay').disabled=false;$('#bStop').disabled=true;$('#prog').hidden=true;finish()}
+$('#bPlay').onclick=()=>{
+  session();const ctx=new AudioContext(),src=ctx.createBufferSource(),an=ctx.createAnalyser(),td=new Float32Array(1024);callGain=ctx.createGain();
+  src.buffer=rec.dec;src.connect(callGain);callGain.connect(an);callGain.connect(ctx.destination);src.start();
+  let i=0;const t0=ctx.currentTime;$('#prog').hidden=false;
+  const t=setInterval(()=>{const el=ctx.currentTime-t0;
+    an.getFloatTimeDomainData(td);let q=0;for(const v of td)q+=v*v;setLvl(Math.sqrt(q/td.length));$('#pbar').style.width=Math.min(100,el/rec.dec.duration*100)+'%';
+    while(i<rec.segs.length&&rec.segs[i].e/SR<=el){send(i16(rec.pcm.subarray(rec.segs[i].s,rec.segs[i].e)));i++}
+    if(el>rec.dec.duration+.3&&i>=rec.segs.length)stopPlay()},100);
+  play={ctx,src,t};$('#bPlay').disabled=true;$('#bStop').disabled=false;status('live','Analysing call');
+};
+$('#bStop').onclick=()=>play&&stopPlay();
+
+/* ---------- tabs ---------- */
+function tab(rc){if(live)stopLive();if(play)stopPlay();$('#pLive').hidden=rc;$('#pRec').hidden=!rc;$('#tLive').classList.toggle('on',!rc);$('#tRec').classList.toggle('on',rc)}
+$('#tLive').onclick=()=>tab(false);$('#tRec').onclick=()=>tab(true);
+function go(a){$('#land').hidden=a;$('#hdr').hidden=!a;$('.app').hidden=!a;scrollTo(0,0)}
+$('#go').onclick=()=>go(true);$('.brand').onclick=()=>{tab(false);go(false)};
+session();fetch('/api/stats').then(r=>r.json()).then(stat).catch(()=>stat({stt_calls:0,stt_audio_s:0,stt_avg_ms:0,tts_chars:0}));fetch('/api/warning').catch(()=>{});
+</script>
+</body>
+</html>
